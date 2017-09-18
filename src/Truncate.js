@@ -164,6 +164,14 @@ export default class Truncate extends Component {
         return node.offsetWidth;
     }
 
+    splitLine(line, maxLength) {
+        const midIndex = Math.floor(maxLength / 2);
+        return [
+            line.slice(0, midIndex),
+            line.slice(-midIndex - 1)
+        ];
+    }
+
     getLines() {
         const {
             refs,
@@ -177,6 +185,7 @@ export default class Truncate extends Component {
             },
             innerText,
             measureWidth,
+            splitLine,
             onTruncate
         } = this;
 
@@ -215,20 +224,26 @@ export default class Truncate extends Component {
 
                 let lower = 0;
                 let upper = textRest.length - 1;
+                let lineParts;
 
                 while (lower <= upper) {
                     const middle = Math.floor((lower + upper) / 2);
+                    lineParts = splitLine(textRest, middle);
+                    const leftWidth = measureWidth(lineParts[0]);
+                    const rightWidth = measureWidth(lineParts[1]);
 
-                    const testLine = textRest.slice(0, middle + 1);
-
-                    if (measureWidth(testLine) + ellipsisWidth <= targetWidth) {
+                    if (leftWidth + ellipsisWidth + rightWidth <= targetWidth) {
                         lower = middle + 1;
                     } else {
                         upper = middle - 1;
                     }
                 }
 
-                resultLine = <span>{textRest.slice(0, lower)}{ellipsis}</span>;
+                if (upper < lower) {
+                    lineParts = splitLine(textRest, upper);
+                }
+
+                resultLine = <span>{lineParts[0]}{ellipsis}{lineParts[1]}</span>;
             } else {
                 // Binary search determining when the line breaks
                 let lower = 0;
