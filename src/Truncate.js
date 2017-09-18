@@ -95,7 +95,7 @@ export default class Truncate extends Component {
         test.innerHTML = 'foo<br/>bar';
 
         if (test[contentKey].replace(/\r\n|\r/g, '\n') !== 'foo\nbar') {
-            div.innerHTML = div.innerHTML.replace(/<br.*?[\/]?>/gi, '\n');
+            div.innerHTML = div.innerHTML.replace(/<br.*?[/]?>/gi, '\n');
             text = div[contentKey];
         }
 
@@ -315,6 +315,7 @@ export default class Truncate extends Component {
             }
         }
 
+        delete spanProps.wordBreak;
         delete spanProps.onTruncate;
 
         return (
