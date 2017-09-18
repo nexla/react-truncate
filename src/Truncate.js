@@ -268,8 +268,8 @@ export default class Truncate extends Component {
                     continue;
                 }
 
-                resultLine = textWords.slice(0, lower).join(wordBreak);
-                textLines[0].splice(0, lower);
+                resultLine = textWords.slice(0, upper).join(wordBreak);
+                textLines[0].splice(0, upper);
             }
 
             lines.push(resultLine);
