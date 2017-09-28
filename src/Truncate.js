@@ -58,11 +58,11 @@ export default class Truncate extends Component {
 
         window.addEventListener('resize', onResize);
 
-        // a hack to make it work properly in Chrome
-        if (navigator.userAgent.indexOf('Chrome') > -1) {
+        // a hack to make it work properly in Chrome and Safari
+        if (navigator.userAgent.indexOf('Firefox') === -1) {
             setTimeout(() => {
                 calcTargetWidth();
-            }, 50);
+            }, 500);
         }
     }
 
