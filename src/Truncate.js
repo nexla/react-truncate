@@ -6,6 +6,7 @@ export default class Truncate extends Component {
         children: PropTypes.node,
         ellipsis: PropTypes.node,
         wordBreak: PropTypes.string,
+        splitIndex: PropTypes.number,
         lines: PropTypes.oneOfType([
             PropTypes.oneOf([false]),
             PropTypes.number
@@ -17,6 +18,7 @@ export default class Truncate extends Component {
         children: '',
         ellipsis: '…',
         wordBreak: ' ',
+        splitIndex: -1,
         lines: 1
     };
 
@@ -29,6 +31,7 @@ export default class Truncate extends Component {
         this.onTruncate = this.onTruncate.bind(this);
         this.calcTargetWidth = this.calcTargetWidth.bind(this);
         this.measureWidth = this.measureWidth.bind(this);
+        this.splitLine = this.splitLine.bind(this);
         this.getLines = this.getLines.bind(this);
         this.renderLine = this.renderLine.bind(this);
     }
@@ -172,10 +175,17 @@ export default class Truncate extends Component {
     }
 
     splitLine(line, maxLength) {
-        const midIndex = Math.floor(maxLength / 2);
+        const {
+            props: {
+                splitIndex
+            }
+        } = this;
+        const effectiveSplitIndex = splitIndex < 0
+            ? Math.floor(maxLength / 2)
+            : splitIndex;
         return [
-            line.slice(0, midIndex),
-            line.slice(-midIndex - 1)
+            line.slice(0, effectiveSplitIndex),
+            line.slice(-maxLength - effectiveSplitIndex - 1)
         ];
     }
 
