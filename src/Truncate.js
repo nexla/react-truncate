@@ -348,6 +348,7 @@ export default class Truncate extends Component {
         }
 
         delete spanProps.wordBreak;
+        delete spanProps.splitIndex;
         delete spanProps.onTruncate;
 
         return (
